@@ -85,7 +85,12 @@ class MultipleChoice extends BaseComponent {
     _selectOption(selectedOption) {
 
         let selectedOptions = this.state.selectedOptions;
-        const index = selectedOptions.indexOf(selectedOption);
+        let index;
+        if (this.props.findIndexProp != null) {
+            index = selectedOptions.findIndex(i => i[this.props.findIndexProp] === i[this.props.findIndexProp])
+        } else {
+            index = selectedOptions.indexOf(selectedOption);
+        }
 
         if (index === -1) {
             this._validateMaxSelectedOptions();
