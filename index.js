@@ -181,6 +181,7 @@ class MultipleChoice extends BaseComponent {
     render() {
         return (
             <ListView
+                enableEmptySections={true}
                 style={[Styles.list, this.props.style]}
                 dataSource={this.state.dataSource}
                 renderRow={this._renderRow}
