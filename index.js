@@ -24,16 +24,18 @@ const propTypes = {
     renderText: React.PropTypes.func,
     style: View.propTypes.style,
     optionStyle: View.propTypes.style,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    indicatorLeft: PropTypes.bool,
 };
 const defaultProps = {
     options: [],
     selectedOptions: [],
-    onSelection(option){},
+    onSelection(option,){},
     selectedOptionsList(optionList){},
     style:{},
     optionStyle:{},
-    disabled: false
+    disabled: false,
+    indicatorLeft: false,
 };
 
 class MultipleChoice extends BaseComponent {
@@ -117,18 +119,20 @@ class MultipleChoice extends BaseComponent {
         return this._getIndex(option) > -1;
     }
 
-    _renderIndicator(option) {
-        if (this._isSelected(option)) {
-            if(typeof this.props.renderIndicator === 'function') {
-                return this.props.renderIndicator(option);
-            }
+    _renderIndicator(option, selected) {
 
+        if(typeof this.props.renderIndicator === 'function') {
+            return this.props.renderIndicator(option, selected);
+        }
+        if (selected) {
             return (
                 <Image
                     style={Styles.optionIndicatorIcon}
                     source={require('./assets/images/check.png')}
                 />
             );
+        } else {
+            return null;
         }
     }
 
@@ -141,10 +145,10 @@ class MultipleChoice extends BaseComponent {
         return (<View style={Styles.separator} />);
     }
 
-    _renderText(option) {
+    _renderText(option, selected) {
 
         if(typeof this.props.renderText === 'function') {
-            return this.props.renderText(option);
+            return this.props.renderText(option, selected);
         }
 
         return (<Text>{option}</Text>);
@@ -152,8 +156,16 @@ class MultipleChoice extends BaseComponent {
 
     _renderRow(option) {
 
+        const selected = this._isSelected(option);
+        let customRow = (
+            <View>
+                {this.props.indicatorLeft && <View style={Styles.optionIndicator}>{this._renderIndicator(option, selected)}</View>}
+                <View style={Styles.optionLabel}>{this._renderText(option, selected)}</View>
+                {!this.props.indicatorLeft && <View style={Styles.optionIndicator}>{this._renderIndicator(option, selected)}</View>}
+            </View>
+        );
         if(typeof this.props.renderRow === 'function') {
-            return this.props.renderRow(option);
+            customRow = this.props.renderRow(option, selected);
         }
 
         const disabled = this.state.disabled;
@@ -168,8 +180,7 @@ class MultipleChoice extends BaseComponent {
                         <View
                             style={Styles.row}
                         >
-                            <View style={Styles.optionLabel}>{this._renderText(option)}</View>
-                            <View style={Styles.optionIndicator}>{this._renderIndicator(option)}</View>
+                            {customRow}
                         </View>
                     </View>
                 </TouchableOpacity>
