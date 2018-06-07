@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import {
   Text,
   TouchableOpacity,
@@ -8,20 +8,21 @@ import {
   Image,
   ListView
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 import BaseComponent from './BaseComponent'
 import Styles from './styles'
 
 const propTypes = {
-    options: React.PropTypes.array.isRequired,
-    selectedOptions: React.PropTypes.array,
-    selectedOptionsList:React.PropTypes.func,
-    maxSelectedOptions: React.PropTypes.number,
-    onSelection: React.PropTypes.func,
-    renderIndicator: React.PropTypes.func,
-    renderSeparator: React.PropTypes.func,
-    renderRow: React.PropTypes.func,
-    renderText: React.PropTypes.func,
+    options: PropTypes.array.isRequired,
+    selectedOptions: PropTypes.array,
+    selectedOptionsList: PropTypes.func,
+    maxSelectedOptions: PropTypes.number,
+    onSelection: PropTypes.func,
+    renderIndicator: PropTypes.func,
+    renderSeparator: PropTypes.func,
+    renderRow: PropTypes.func,
+    renderText: PropTypes.func,
     style: View.propTypes.style,
     optionStyle: View.propTypes.style,
     disabled: PropTypes.bool,
