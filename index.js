@@ -1,6 +1,5 @@
 'use strict';
 
-import React from 'react'
 import {
   Text,
   TouchableOpacity,
@@ -13,6 +12,8 @@ import PropTypes from 'prop-types';
 import BaseComponent from './BaseComponent'
 import Styles from './styles'
 
+const ViewStylePropTypes = ViewPropTypes ? ViewPropTypes.style : View.propTypes.style;
+
 const propTypes = {
     options: PropTypes.array.isRequired,
     selectedOptions: PropTypes.array,
@@ -23,8 +24,8 @@ const propTypes = {
     renderSeparator: PropTypes.func,
     renderRow: PropTypes.func,
     renderText: PropTypes.func,
-    style: View.propTypes.style,
-    optionStyle: View.propTypes.style,
+    style: ViewStylePropTypes,
+    optionStyle: ViewStylePropTypes,
     disabled: PropTypes.bool,
     indicatorLeft: PropTypes.bool,
 };
