@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
   Image,
-  ListView,
+  FlatList,
   ViewPropTypes
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -46,11 +46,8 @@ class MultipleChoice extends BaseComponent {
     constructor(props) {
         super(props);
 
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => true});
-        this.ds = ds;
 
         this.state = {
-            dataSource: ds.cloneWithRows(this.props.options),
             selectedOptions: this.props.selectedOptions || [],
             disabled: this.props.disabled
         };
@@ -71,8 +68,7 @@ class MultipleChoice extends BaseComponent {
     }
     _updateSelectedOptions(selectedOptions) {
         this.setState({
-            selectedOptions,
-            dataSource: this.ds.cloneWithRows(this.props.options)
+            selectedOptions
         });
     }
 
@@ -119,7 +115,7 @@ class MultipleChoice extends BaseComponent {
 
     _isSelected(option) {
         // return this.state.selectedOptions.indexOf(option) !== -1;
-        return this._getIndex(option) > -1;
+        return this._getIndex(option.item) > -1;
     }
 
     _renderIndicator(option, selected) {
@@ -168,7 +164,7 @@ class MultipleChoice extends BaseComponent {
             </View>
         );
         if(typeof this.props.renderRow === 'function') {
-            customRow = this.props.renderRow(option, selected);
+            customRow = this.props.renderRow(option.item, selected);
         }
 
         const disabled = this.state.disabled;
@@ -177,7 +173,7 @@ class MultipleChoice extends BaseComponent {
             <View style={this.props.optionStyle}>
                 <TouchableOpacity
                     activeOpacity={disabled ? 1 : 0.7}
-                    onPress={!disabled ? ()=>{this._selectOption(option)} : null}
+                    onPress={!disabled ? ()=>{this._selectOption(option.item)} : null}
                 >
                     <View>
                         <View
@@ -194,11 +190,11 @@ class MultipleChoice extends BaseComponent {
 
     render() {
         return (
-            <ListView
-                enableEmptySections={true}
+            <FlatList
                 style={[Styles.list, this.props.style]}
-                dataSource={this.state.dataSource}
-                renderRow={this._renderRow}
+                data={this.props.options}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={this._renderRow}
             />
         );
     }
