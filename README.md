@@ -4,12 +4,14 @@ A cross-platform (iOS / Android) single and multiple-choice React Native compone
 ## Install
 
 ```sh
-npm i react-native-multiple-choice --save
+yarn add somoso/react-native-multiple-choice
 ```
 
 ## Usage
 
 Here is an overview of the component usage.
+
+Simple list (i.e. list of strings):
 
 ```jsx
 <MultipleChoice
@@ -23,6 +25,24 @@ Here is an overview of the component usage.
     selectedOptions={['Lorem ipsum']}
     maxSelectedOptions={2}
     onSelection={(option)=>alert(option + ' was selected!')}
+/>
+```
+
+For list of objects:
+
+```jsx
+<MultipleChoice
+    options={[
+        {item: 'Lorem ipsum dolor sit'},
+        {item: 'Lorem ipsum'},
+        {item: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.'},
+        {item: 'Lorem ipsum dolor sit amet, consetetur'},
+        {item: 'Lorem ipsum dolor'}
+    ]}
+    findIndexProp="item"
+    selectedOptions={[{item: 'Lorem ipsum'}]}
+    maxSelectedOptions={2}
+    onSelection={(option)=>alert(option.item + ' was selected!')}
 />
 ```
 
@@ -40,7 +60,5 @@ Here is an overview of the component usage.
 * `renderText - function(option)` should return a text node, default: text node
 * `renderRow - function(option)` should return a option view
 * `disabled - bool` if set to true component is disabled and can't be interacted with
+* `findIndexProp` if set, it will treat the list as a list of objects, and display the value matching the key in the object
 
-## Screenshot
-
-![example](https://raw.githubusercontent.com/d-a-n/react-native-multiple-choice/master/assets/images/screenshot.png)
